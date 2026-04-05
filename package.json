@@ -1,4 +1,5 @@
 {
+  "name": "catalyzers",
   "dependencies": {
     "canvas": "^3.2.3"
   }
