@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "FitGenius — AI Size Recommendations",
+  "name": "Catalyzers — Shop With Confidence",
   "version": "1.0.0",
-  "description": "AI-powered clothing size recommendations for online shopping — personalized fit scores on every product",
+  "description": "Precision AI styling and verification dynamically injected right into your shopping tab. Never order the wrong size again.",
   "permissions": [
     "storage",
     "activeTab"
