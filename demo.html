@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitGenius — AI Size Recommendation Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6C5CE7;
+      --primary-light: #a29bfe;
+      --secondary: #00cec9;
+      --accent: #fd79a8;
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --danger: #e17055;
+      --bg: #0a0a1a;
+      --bg-card: rgba(25, 25, 50, 0.95);
+      --text: #f0f0f5;
+      --text-muted: #9b9bb5;
+      --border: rgba(108, 92, 231, 0.25);
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(180deg, rgba(108,92,231,0.15) 0%, transparent 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(108,92,231,0.1) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 50%, rgba(0,206,201,0.08) 0%, transparent 50%);
+      animation: heroDrift 20s ease-in-out infinite;
+    }
+    
+    @keyframes heroDrift {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-5%); }
+    }
+    
+    .hero-content { position: relative; z-index: 1; }
+    
+    .hero-logo {
+      width: 80px; height: 80px;
+      margin: 0 auto 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 8px 30px rgba(108,92,231,0.4);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px)} 100%{opacity:1;transform:translateY(0)} }
+    @keyframes slideIn { 0%{opacity:0;transform:translateX(100px)} 100%{opacity:1;transform:translateX(0)} }
+    
+    .hero h1 {
+      font-size: 48px; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      animation: fadeUp 0.8s ease-out;
+    }
+    
+    .hero p {
+      font-size: 18px; color: var(--text-muted);
+      max-width: 600px; margin: 0 auto 30px;
+      line-height: 1.6;
+      animation: fadeUp 0.8s ease-out 0.2s both;
+    }
+    
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 25px;
+      background: var(--glass); border: 1px solid var(--border);
+      font-size: 13px; color: var(--secondary);
+      animation: fadeUp 0.8s ease-out 0.4s both;
+    }
+    
+    /* Demo Section */
+    .demo-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .section-title h2 {
+      font-size: 28px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .section-title p {
+      color: var(--text-muted); font-size: 14px;
+    }
+    
+    /* Feature Cards */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      animation: fadeUp 0.6s ease-out both;
+    }
+    
+    .feature-card:nth-child(2) { animation-delay: 0.1s; }
+    .feature-card:nth-child(3) { animation-delay: 0.2s; }
+    .feature-card:nth-child(4) { animation-delay: 0.3s; }
+    
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px rgba(108,92,231,0.15);
+    }
+    
+    .feature-icon { font-size: 36px; margin-bottom: 16px; }
+    
+    .feature-card h3 {
+      font-size: 18px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .feature-card p {
+      font-size: 13px; color: var(--text-muted);
+      line-height: 1.6;
+    }
+    
+    /* Live Demo */
+    .demo-container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      align-items: start;
+    }
+    
+    @media (max-width: 900px) {
+      .demo-container { grid-template-columns: 1fr; }
+    }
+    
+    /* Mock Product Page */
+    .mock-product {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    
+    .mock-product-image {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #1a1a3e, #2d2d5e);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .mock-product h3 {
+      font-size: 20px; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .mock-product .price {
+      font-size: 24px; font-weight: 800;
+      color: var(--success);
+      margin-bottom: 16px;
+    }
+    
+    .mock-sizes {
+      display: flex; gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .mock-size-btn {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--glass);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .mock-size-btn.recommended {
+      border-color: var(--primary);
+      background: rgba(108,92,231,0.2);
+      box-shadow: 0 0 15px rgba(108,92,231,0.3);
+      animation: pulse 2s infinite;
+    }
+    
+    .mock-size-btn:hover {
+      border-color: var(--primary-light);
+    }
+    
+    .mock-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .mock-detail {
+      background: var(--glass);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    
+    .mock-detail-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    
+    .mock-detail-value {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    
+    /* Widget Preview */
+    .widget-preview {
+      background: rgba(15, 15, 30, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      border: 1px solid rgba(108,92,231,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      overflow: hidden;
+      animation: slideIn 0.8s ease-out;
+    }
+    
+    .widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(108,92,231,0.2), rgba(0,206,201,0.1));
+      border-bottom: 1px solid rgba(108,92,231,0.3);
+    }
+    
+    .widget-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    
+    .widget-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(108,92,231,0.4);
+    }
+    
+    .widget-logo-text { font-weight: 700; font-size: 16px; }
+    .widget-logo-badge {
+      font-size: 9px; font-weight: 600;
+      color: var(--secondary);
+      background: rgba(0,206,201,0.15);
+      padding: 2px 6px; border-radius: 4px;
+      text-transform: uppercase;
+    }
+    
+    .widget-content { padding: 20px; }
+    
+    /* Rec Card */
+    .rec-card {
+      background: rgba(30,30,55,0.9);
+      border: 1px solid rgba(108,92,231,0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    
+    .rec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .rec-label {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    
+    .fit-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      background: rgba(0,184,148,0.15);
+      color: var(--success);
+      border: 1px solid rgba(0,184,148,0.3);
+    }
+    
+    .size-display {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .size-big {
+      font-size: 48px; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .size-info-label { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    
+    .alt-size {
+      font-size: 12px; color: var(--text-muted);
+      padding: 4px 10px;
+      background: var(--glass);
+      border-radius: 20px;
+      display: inline-block;
+    }
+    
+    /* Confidence Bar */
+    .conf-bar-wrap {
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    
+    .conf-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+      background-size: 200%;
+      background-position: right;
+      transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    
+    .conf-text {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+    }
+    
+    .conf-value { font-weight: 700; color: var(--success); }
+    
+    /* Fit Grid */
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .fit-item {
+      background: var(--glass);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    
+    .fit-area {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    
+    .fit-status { font-size: 12px; font-weight: 500; }
+    .fit-status.good { color: var(--success); }
+    .fit-status.snug { color: var(--warning); }
+    
+    /* Material Card */
+    .material-card {
+      background: rgba(30,30,55,0.9);
+      border: 1px solid rgba(108,92,231,0.3);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .mat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    
+    .mat-val { font-size: 18px; font-weight: 700; }
+    .mat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    
+    /* Review Card */
+    .review-card {
+      background: rgba(30,30,55,0.9);
+      border: 1px solid rgba(108,92,231,0.3);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .review-sentiment {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px;
+      background: var(--glass);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    
+    .review-emoji { font-size: 24px; }
+    .review-text { font-size: 13px; line-height: 1.4; }
+    
+    /* Tip */
+    .tip {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px;
+      background: var(--glass);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    
+    .tip-icon { font-size: 18px; }
+    .tip-text { font-size: 12px; line-height: 1.5; color: var(--text); }
+    
+    .section-label {
+      font-size: 13px; font-weight: 600;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    
+    /* Install CTA */
+    .install-section {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(180deg, transparent, rgba(108,92,231,0.08));
+    }
+    
+    .install-section h2 {
+      font-size: 28px; font-weight: 700; margin-bottom: 12px;
+    }
+    
+    .install-section p {
+      color: var(--text-muted); font-size: 14px;
+      margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    
+    .install-steps {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .install-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      width: 220px;
+      text-align: center;
+    }
+    
+    .install-step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px;
+      margin: 0 auto 12px;
+    }
+    
+    .install-step h4 {
+      font-size: 14px; font-weight: 600; margin-bottom: 6px;
+    }
+    
+    .install-step p {
+      font-size: 11px; color: var(--text-muted); line-height: 1.5;
+      margin: 0;
+    }
+    
+    .code-block {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--secondary);
+      text-align: left;
+      max-width: 500px;
+      margin: 20px auto;
+      overflow-x: auto;
+    }
+    
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 16px 0;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Quick Setup Form */
+    .quick-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .quick-form h3 { font-size: 16px; margin-bottom: 16px; }
+    .qf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .qf-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .qf-input {
+      width: 100%; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid var(--border); background: rgba(30,30,60,0.8);
+      color: var(--text); font-family: 'Inter', sans-serif; font-size: 13px;
+    }
+    .qf-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108,92,231,0.15); }
+    .qf-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+    .qf-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,92,231,0.4); }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-logo">👔</div>
+      <h1>FitGenius</h1>
+      <p>AI-powered clothing size recommendations that work on any shopping site. Never order the wrong size again.</p>
+      <div class="hero-badge">
+        ⚡ Works on Amazon, Flipkart, Myntra, Zara, ASOS, H&M & more
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="demo-section">
+    <div class="section-title">
+      <h2>✨ How It Works</h2>
+      <p>FitGenius uses AI to match your body with the perfect clothing size</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📏</div>
+        <h3>Body Profile</h3>
+        <p>Just enter your height, weight, body shape, and usual size — we auto-estimate all your measurements. No tape measure needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Smart Extraction</h3>
+        <p>Automatically detects clothing products and extracts sizes, materials, fit type, and size charts from the page.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>AI Recommendations</h3>
+        <p>Compares your measurements with product sizing, adjusting for material stretch, fit preferences, and review sentiment.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏷️</div>
+        <h3>Product Card Badges</h3>
+        <p>AI confidence scores appear on every product card while you browse. Instantly see which items will fit you best — no clicking needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Demo -->
+  <section class="demo-section">
+    <div class="section-title">
+      <h2>🎯 Live Demo</h2>
+      <p>Just height, weight & body shape — we do the rest</p>
+    </div>
+
+    <div class="demo-container">
+
+      <!-- Mock Product -->
+      <div>
+        <div class="quick-form">
+          <h3>🙋 About You <span style="font-size:12px;color:var(--text-muted);font-weight:400">— no tape measure needed!</span></h3>
+          <div class="qf-row">
+            <div class="qf-group">
+              <label>Height (feet)</label>
+              <input type="number" class="qf-input" id="demo-height-ft" value="5" min="3" max="7" step="1">
+            </div>
+            <div class="qf-group">
+              <label>Height (inches)</label>
+              <input type="number" class="qf-input" id="demo-height-in" value="10" min="0" max="11" step="1">
+            </div>
+          </div>
+          <div class="qf-row">
+            <div class="qf-group">
+              <label>Weight (lbs)</label>
+              <input type="number" class="qf-input" id="demo-weight" value="170" step="1">
+            </div>
+            <div class="qf-group">
+              <label>Usual T-Shirt Size</label>
+              <select class="qf-input" id="demo-usual-size">
+                <option value="">Not sure</option>
+                <option value="XS">XS</option>
+                <option value="S">Small</option>
+                <option value="M" selected>Medium</option>
+                <option value="L">Large</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+              </select>
+            </div>
+          </div>
+          <div class="qf-row">
+            <div class="qf-group">
+              <label>Body Shape</label>
+              <select class="qf-input" id="demo-shape">
+                <option value="slim">🏃 Slim / Lean</option>
+                <option value="athletic">💪 Athletic</option>
+                <option value="average" selected>🧍 Average</option>
+                <option value="stocky">🏋️ Stocky / Broad</option>
+                <option value="heavy">🐻 Full / Heavy</option>
+              </select>
+            </div>
+            <div class="qf-group">
+              <label>Gender</label>
+              <select class="qf-input" id="demo-gender">
+                <option value="male" selected>👨 Male</option>
+                <option value="female">👩 Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="qf-row">
+            <div class="qf-group">
+              <label>Fit Preference</label>
+              <select class="qf-input" id="demo-fit">
+                <option value="slim">Slim Fit</option>
+                <option value="regular" selected>Regular Fit</option>
+                <option value="relaxed">Relaxed Fit</option>
+                <option value="oversized">Oversized</option>
+              </select>
+            </div>
+            <div class="qf-group" style="display:flex;align-items:flex-end">
+              <button class="qf-btn" onclick="runDemo()" style="margin:0">🧠 Get Recommendation</button>
+            </div>
+          </div>
+          <div id="demo-estimates" style="display:none;margin-top:12px;padding:12px;background:var(--glass);border-radius:10px;">
+            <div style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px">📐 Auto-Estimated Measurements</div>
+            <div id="demo-estimate-values" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center"></div>
+          </div>
+        </div>
+
+        <!-- Gemini API Key -->
+        <div class="quick-form" style="margin-top:16px; border-color: rgba(0,206,201,0.3);">
+          <h3>🤖 Gemini AI <span style="font-size:12px;color:var(--secondary);font-weight:400">— Enhanced Recommendations</span></h3>
+          <div class="qf-row">
+            <div class="qf-group" style="flex:2">
+              <label>API Key</label>
+              <input type="password" class="qf-input" id="demo-api-key" placeholder="AIza..." value="AIzaSyDbMnbuS3DOHXD58RZtzNkswhnE-U01mI0" style="font-family:monospace;">
+            </div>
+            <div class="qf-group" style="display:flex;align-items:flex-end">
+              <button class="qf-btn" onclick="testApiKey()" style="margin:0;background:linear-gradient(135deg,var(--secondary),var(--success))">⚡ Test</button>
+            </div>
+          </div>
+          <div id="api-test-status" style="font-size:11px;margin-top:4px;"></div>
+        </div>
+
+        <!-- Reference Product -->
+        <div class="quick-form" style="margin-top:16px; border-color: rgba(253,121,168,0.3);">
+          <h3>📦 My Wardrobe <span style="font-size:12px;color:var(--accent);font-weight:400">— Compare against products you own</span></h3>
+          <div class="qf-row">
+            <div class="qf-group" style="flex:2">
+              <label>Product Name / URL</label>
+              <input type="text" class="qf-input" id="demo-ref-title" placeholder="Nike Dri-FIT T-Shirt" value="Nike Dri-FIT Crew Neck Training Tee">
+            </div>
+          </div>
+          <div class="qf-row">
+            <div class="qf-group">
+              <label>Size You Bought</label>
+              <select class="qf-input" id="demo-ref-size">
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL" selected>XL</option>
+                <option value="XXL">XXL</option>
+              </select>
+            </div>
+            <div class="qf-group">
+              <label>How Did It Fit?</label>
+              <select class="qf-input" id="demo-ref-fit">
+                <option value="perfect" selected>✅ Perfect</option>
+                <option value="slightly-tight">🟡 Slightly tight</option>
+                <option value="slightly-loose">🟡 Slightly loose</option>
+                <option value="too-small">🔴 Too small</option>
+                <option value="too-large">🔴 Too large</option>
+              </select>
+            </div>
+          </div>
+          <div id="ref-products-list" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="mock-product">
+          <div class="mock-product-image">👕</div>
+          <h3>Premium Cotton Crew-Neck T-Shirt</h3>
+          <div class="price">$29.99</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Available Sizes:</div>
+          <div class="mock-sizes" id="mock-sizes">
+            <button class="mock-size-btn" data-size="XS">XS</button>
+            <button class="mock-size-btn" data-size="S">S</button>
+            <button class="mock-size-btn" data-size="M">M</button>
+            <button class="mock-size-btn recommended" data-size="L">L</button>
+            <button class="mock-size-btn" data-size="XL">XL</button>
+            <button class="mock-size-btn" data-size="XXL">XXL</button>
+          </div>
+          <div class="mock-details">
+            <div class="mock-detail">
+              <div class="mock-detail-label">Material</div>
+              <div class="mock-detail-value">100% Cotton</div>
+            </div>
+            <div class="mock-detail">
+              <div class="mock-detail-label">Fit Type</div>
+              <div class="mock-detail-value">Regular Fit</div>
+            </div>
+            <div class="mock-detail">
+              <div class="mock-detail-label">Rating</div>
+              <div class="mock-detail-value">⭐ 4.3 (2,847 reviews)</div>
+            </div>
+            <div class="mock-detail">
+              <div class="mock-detail-label">Brand</div>
+              <div class="mock-detail-value">StyleCraft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget Preview -->
+      <div class="widget-preview" id="widget-preview">
+        <div class="widget-header">
+          <div class="widget-logo">
+            <div class="widget-logo-icon">👔</div>
+            <div>
+              <div class="widget-logo-text">FitGenius</div>
+              <div class="widget-logo-badge">AI Powered</div>
+            </div>
+          </div>
+        </div>
+        <div class="widget-content" id="widget-content">
+          <!-- Dynamic content rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section class="install-section">
+    <h2>🚀 Get Started</h2>
+    <p>Install FitGenius in Chrome in 3 simple steps</p>
+    
+    <div class="install-steps">
+      <div class="install-step">
+        <div class="install-step-num">1</div>
+        <h4>Open Extensions</h4>
+        <p>Go to <code>chrome://extensions</code> and enable Developer Mode</p>
+      </div>
+      <div class="install-step">
+        <div class="install-step-num">2</div>
+        <h4>Load Extension</h4>
+        <p>Click "Load unpacked" and select the <code>fitgenius</code> folder</p>
+      </div>
+      <div class="install-step">
+        <div class="install-step-num">3</div>
+        <h4>Set Up Profile</h4>
+        <p>Click the FitGenius icon and enter your measurements</p>
+      </div>
+    </div>
+    
+    <div class="code-block">
+      📁 fitgenius/<br>
+      ├── manifest.json<br>
+      ├── popup/ (Profile UI)<br>
+      ├── content/ (Widget + Extractors)<br>
+      ├── engine/ (AI Recommendation)<br>
+      ├── tryon/ (Virtual Try-On)<br>
+      └── background/ (Service Worker)
+    </div>
+  </section>
+
+  <footer class="footer">
+    FitGenius — AI-Powered Size Recommendations • Built for the Hackathon 2026
+  </footer>
+
+  <!-- Load the actual engine for the demo -->
+  <script src="engine/materials.js"></script>
+  <script src="engine/size-charts.js"></script>
+  <script src="engine/body-estimator.js"></script>
+  <script src="engine/recommender.js"></script>
+  <script src="engine/gemini.js"></script>
+  <script>
+    // ─── Gemini API Key Test ───
+    async function testApiKey() {
+      const statusEl = document.getElementById('api-test-status');
+      const apiKey = document.getElementById('demo-api-key').value.trim();
+      
+      if (!apiKey) {
+        statusEl.innerHTML = '<span style="color:var(--danger)">❌ Enter a key first</span>';
+        return;
+      }
+      
+      statusEl.innerHTML = '<span style="color:var(--text-muted)">⏳ Testing connection...</span>';
+      
+      try {
+        const result = await FG_Gemini.testConnection(apiKey);
+        if (result.success) {
+          statusEl.innerHTML = '<span style="color:var(--success)">✅ Connected to Gemini AI! Recommendations will now use AI analysis.</span>';
+        } else {
+          statusEl.innerHTML = `<span style="color:var(--danger)">❌ ${result.error}</span>`;
+        }
+      } catch (e) {
+        statusEl.innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`;
+      }
+    }
+
+    // ─── Build reference product from form ───
+    function getRefProduct() {
+      const title = document.getElementById('demo-ref-title').value.trim();
+      if (!title) return null;
+      
+      return {
+        title: title,
+        size: document.getElementById('demo-ref-size').value,
+        purchasedSize: document.getElementById('demo-ref-size').value,
+        fitFeedback: document.getElementById('demo-ref-fit').value,
+        clothingType: 't-shirt',
+        material: 'polyester blend',
+        fitType: 'regular',
+        brand: title.split(' ')[0] || 'Unknown',
+        gender: document.getElementById('demo-gender').value === 'male' ? 'men' : 'women'
+      };
+    }
+
+    // ─── Main Demo Function ───
+    function runDemo() {
+      const ft = parseFloat(document.getElementById('demo-height-ft').value) || 5;
+      const inches = parseFloat(document.getElementById('demo-height-in').value) || 10;
+      const heightInches = ft * 12 + inches;
+      const weightLbs = parseFloat(document.getElementById('demo-weight').value) || 170;
+      const usualSize = document.getElementById('demo-usual-size').value;
+      const bodyShape = document.getElementById('demo-shape').value;
+      const fitPref = document.getElementById('demo-fit').value;
+      const gender = document.getElementById('demo-gender').value;
+
+      // Auto-estimate measurements
+      const estimated = FG_BodyEstimator.estimate({
+        heightInches, weightLbs,
+        gender: gender === 'male' ? 'male' : 'female',
+        bodyShape,
+        usualSize: usualSize || undefined
+      });
+
+      // Show estimates
+      const estDiv = document.getElementById('demo-estimates');
+      const estVals = document.getElementById('demo-estimate-values');
+      if (estimated) {
+        estDiv.style.display = 'block';
+        estVals.innerHTML = [
+          ['Chest', estimated.chest],
+          ['Waist', estimated.waist],
+          ['Hip', estimated.hip],
+          ['Shoulder', estimated.shoulder]
+        ].map(([label, val]) => `<div><div style="font-size:16px;font-weight:700;color:var(--primary-light)">${val}"</div><div style="font-size:9px;color:var(--text-muted)">${label}</div></div>`).join('');
+      }
+
+      const userProfile = {
+        gender: gender === 'male' ? 'male' : 'female',
+        measurements: estimated || { chest: 40, waist: 34, hip: 40, shoulder: 18 },
+        fitPreference: fitPref,
+        usualTopSize: usualSize || undefined
+      };
+      
+      const productData = {
+        title: "Premium Cotton Crew-Neck T-Shirt - Men's",
+        material: '100% Cotton',
+        fitType: 'regular',
+        gender: gender === 'male' ? 'men' : 'women',
+        clothingType: 't-shirt',
+        color: 'Navy Blue',
+        brand: 'StyleCraft',
+        rating: 4.3,
+        reviewCount: 2847,
+        reviews: [
+          { text: 'Fits true to size, very comfortable cotton' },
+          { text: 'Ordered my usual size and it fits perfectly' },
+          { text: 'Runs slightly small in the chest area, sized up' },
+          { text: 'Great quality, true to size fabric' },
+          { text: 'A bit tight around the waist but good overall' },
+          { text: 'Perfect fit, exactly as expected' },
+          { text: 'True to size, soft and breathable cotton' },
+          { text: 'Slightly snug after first wash, recommend ordering one size larger if between sizes' },
+          { text: 'I normally wear XL in Nike and got XL here. Fits a bit slimmer than Nike but still comfortable.' },
+          { text: 'Great shirt but the chest runs about 1 inch smaller than the size chart suggests' }
+        ]
+      };
+
+      // Get reference product
+      const refProduct = getRefProduct();
+      
+      // ─── Phase 1: INSTANT offline recommendation ───
+      const rec = FG_Recommender.generateRecommendation(userProfile, productData, refProduct);
+      renderWidget(rec, productData, false);
+      highlightSize(rec.recommendedSize);
+      
+      // ─── Phase 2: AI UPGRADE (async) ───
+      const apiKey = document.getElementById('demo-api-key').value.trim();
+      if (apiKey) {
+        upgradeWithGemini(apiKey, userProfile, productData, refProduct, rec);
+      }
+    }
+
+    // ─── Gemini AI Upgrade ───
+    async function upgradeWithGemini(apiKey, userProfile, productData, refProduct, offlineRec) {
+      // Show AI loading indicator
+      const widgetContent = document.getElementById('widget-content');
+      const aiIndicator = document.createElement('div');
+      aiIndicator.id = 'ai-loading';
+      aiIndicator.innerHTML = `
+        <div style="background:linear-gradient(135deg,rgba(0,206,201,0.1),rgba(108,92,231,0.1));border:1px solid rgba(0,206,201,0.3);border-radius:10px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:10px;">
+          <div style="width:20px;height:20px;border:2px solid var(--secondary);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--secondary);">🤖 Gemini AI Analyzing...</div>
+            <div style="font-size:10px;color:var(--text-muted);">Deep review analysis & product comparison</div>
+          </div>
+        </div>
+      `;
+      widgetContent.appendChild(aiIndicator);
+
+      try {
+        // Fire in parallel
+        const promises = [
+          FG_Gemini.analyzeReviews(productData.reviews, apiKey)
+        ];
+        
+        // Add comparison if reference product exists
+        const refProducts = refProduct ? [refProduct] : [];
+        if (refProducts.length > 0) {
+          promises.push(FG_Gemini.compareProducts(userProfile, productData, refProducts, apiKey));
+        }
+
+        const results = await Promise.allSettled(promises);
+        
+        let aiReviews = null;
+        let aiComparison = null;
+
+        if (results[0].status === 'fulfilled' && results[0].value) {
+          aiReviews = results[0].value;
+        }
+        if (results.length > 1 && results[1].status === 'fulfilled' && results[1].value) {
+          aiComparison = results[1].value;
+        }
+
+        // Merge AI insights
+        const enhanced = { ...offlineRec };
+        
+        if (aiReviews) {
+          enhanced.reviewInsights = aiReviews;
+          enhanced.aiPowered = true;
+        }
+        
+        if (aiComparison) {
+          enhanced.referenceComparison = aiComparison;
+          
+          // Add AI reasoning as tips
+          if (aiComparison.adjustments) {
+            enhanced.tips = enhanced.tips || [];
+            aiComparison.adjustments.forEach(adj => {
+              enhanced.tips.unshift({ icon: '🤖', text: adj });
+            });
+          }
+          if (aiComparison.reasoning) {
+            enhanced.tips = enhanced.tips || [];
+            enhanced.tips.unshift({ icon: '📦', text: aiComparison.reasoning });
+          }
+        }
+
+        // Re-render with AI data
+        renderWidget(enhanced, productData, true);
+        highlightSize(enhanced.recommendedSize);
+
+      } catch (error) {
+        console.error('Gemini error:', error);
+        // Remove loading indicator, keep offline result
+        const loader = document.getElementById('ai-loading');
+        if (loader) {
+          loader.innerHTML = `
+            <div style="background:rgba(225,112,85,0.1);border:1px solid rgba(225,112,85,0.3);border-radius:10px;padding:10px 16px;margin-top:12px;">
+              <div style="font-size:11px;color:var(--danger);">⚠️ AI analysis unavailable: ${error.message}. Showing offline results.</div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // ─── Render Widget ───
+    function renderWidget(rec, product, isAI) {
+      const confClass = rec.confidence >= 70 ? 'high' : rec.confidence >= 45 ? 'medium' : 'low';
+      const overallClass = rec.fitAnalysis?.overall || 'good';
+      const overallEmoji = { excellent: '🟢', good: '🔵', tight: '🟠', loose: '🟡' }[overallClass] || '⚪';
+      const sourceLabel = isAI ? '🤖 AI-Enhanced' : '⚡ Instant Analysis';
+      const sourceBg = isAI ? 'rgba(0,206,201,0.15)' : 'rgba(108,92,231,0.15)';
+      const sourceColor = isAI ? 'var(--secondary)' : 'var(--primary-light)';
+      
+      const fitItems = Object.entries(rec.fitAnalysis?.areas || {}).map(([area, info]) => `
+        <div class="fit-item">
+          <div class="fit-area">${area.charAt(0).toUpperCase() + area.slice(1)}</div>
+          <div class="fit-status ${info.status === 'good-fit' ? 'good' : 'snug'}">
+            ${info.description || info.status.replace(/-/g, ' ')}
+          </div>
+        </div>
+      `).join('');
+      
+      const tips = (rec.tips || []).map(t => `
+        <div class="tip">
+          <span class="tip-icon">${t.icon}</span>
+          <span class="tip-text">${t.text}</span>
+        </div>
+      `).join('');
+
+      const breathDots = Array.from({length: 10}, (_, i) => 
+        `<span style="width:8px;height:8px;border-radius:50%;display:inline-block;margin:0 1px;background:${i < rec.material.breathability ? 'var(--secondary)' : 'rgba(255,255,255,0.1)'}"></span>`
+      ).join('');
+      
+      const sentimentEmoji = {'runs-small': '📏⬆️', 'runs-large': '📐⬇️', 'true-to-size': '✅'}[rec.reviewInsights?.sentiment] || '📊';
+      
+      // AI-specific sections
+      let aiSpecificHtml = '';
+      if (rec.reviewInsights?.specificIssues && rec.reviewInsights.specificIssues.length > 0) {
+        aiSpecificHtml = `
+          <div style="margin-top:8px;">
+            <div style="font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">Specific Fit Issues Detected</div>
+            ${rec.reviewInsights.specificIssues.map(issue => `
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:3px;color:var(--text);">
+                <span style="color:var(--warning);">⚠️</span>
+                <span>${issue.area}: ${issue.issue} (${issue.frequency})</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      let refCompHtml = '';
+      if (rec.referenceComparison && rec.referenceComparison.reasoning) {
+        refCompHtml = `
+          <div style="background:linear-gradient(135deg,rgba(253,121,168,0.08),rgba(108,92,231,0.08));border:1px solid rgba(253,121,168,0.25);border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+            <div class="section-label" style="margin-bottom:8px;">📦 Wardrobe Comparison</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--text);">
+              ${rec.referenceComparison.reasoning}
+            </div>
+            ${rec.referenceComparison.materialDifference ? `
+              <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+                🧵 ${rec.referenceComparison.materialDifference}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      document.getElementById('widget-content').innerHTML = `
+        <!-- Source indicator -->
+        <div style="display:flex;justify-content:center;margin-bottom:12px;">
+          <span style="font-size:10px;font-weight:600;padding:4px 12px;border-radius:20px;background:${sourceBg};color:${sourceColor};">
+            ${sourceLabel}
+          </span>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-header">
+            <span class="rec-label">Recommended Size</span>
+            <span class="fit-badge">${overallEmoji} ${overallClass.charAt(0).toUpperCase() + overallClass.slice(1)} Fit</span>
+          </div>
+          <div class="size-display">
+            <span class="size-big">${rec.recommendedSize}</span>
+            <div>
+              ${rec.alternativeSize ? `
+                <div class="size-info-label">Also consider:</div>
+                <span class="alt-size">${rec.alternativeSize}</span>
+              ` : `<div class="size-info-label">Best match for your body</div>`}
+            </div>
+          </div>
+          <div class="conf-bar-wrap">
+            <div class="conf-bar-fill" id="conf-fill"></div>
+          </div>
+          <div class="conf-text">
+            <span style="color:var(--text-muted)">Confidence</span>
+            <span class="conf-value">${rec.confidence}%</span>
+          </div>
+        </div>
+
+        ${refCompHtml}
+        
+        <div class="section-label">🎯 Fit Analysis</div>
+        <div class="fit-grid">${fitItems}</div>
+        ${rec.fitAnalysis?.summary ? `
+          <div style="background:var(--glass);border-radius:10px;padding:14px 16px;margin-bottom:16px;border-left:3px solid var(--primary);font-size:13px;line-height:1.5;">
+            ${rec.fitAnalysis.summary}
+          </div>
+        ` : ''}
+        
+        <div class="material-card">
+          <div class="section-label">🧵 Material: ${rec.material.detected.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ')}</div>
+          <div class="mat-grid">
+            <div><div class="mat-val">${Math.round((rec.material.stretchFactor - 1) * 100)}%</div><div class="mat-label">Stretch</div></div>
+            <div><div class="mat-val">${rec.material.weight.charAt(0).toUpperCase() + rec.material.weight.slice(1)}</div><div class="mat-label">Weight</div></div>
+            <div><div>${breathDots}</div><div class="mat-label">Breathability</div></div>
+          </div>
+        </div>
+        
+        ${rec.reviewInsights && rec.reviewInsights.confidence !== 'low' ? `
+          <div class="review-card">
+            <div class="section-label">💬 What Buyers Say ${rec.reviewInsights.source === 'gemini' ? '<span style="color:var(--secondary);font-size:10px;font-weight:400;margin-left:4px;">AI Analyzed</span>' : ''}</div>
+            <div class="review-sentiment">
+              <span class="review-emoji">${sentimentEmoji}</span>
+              <span class="review-text">${rec.reviewInsights.details}</span>
+            </div>
+            ${aiSpecificHtml}
+            ${rec.reviewInsights.brandComparison ? `
+              <div style="margin-top:8px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);padding-top:8px;">
+                🏷️ ${rec.reviewInsights.brandComparison}
+              </div>
+            ` : ''}
+            ${rec.reviewInsights.shrinkageWarning ? `
+              <div style="margin-top:6px;font-size:11px;color:var(--warning);">
+                🧺 ⚠️ Reviewers report shrinkage after washing
+              </div>
+            ` : ''}
+          </div>
+        ` : ''}
+        
+        ${tips ? `
+          <div class="section-label" style="margin-top:16px">💡 Pro Tips</div>
+          ${tips}
+        ` : ''}
+      `;
+      
+      // Animate confidence bar
+      setTimeout(() => {
+        const fill = document.getElementById('conf-fill');
+        if (fill) fill.style.width = rec.confidence + '%';
+      }, 100);
+    }
+    
+    function highlightSize(size) {
+      document.querySelectorAll('.mock-size-btn').forEach(btn => {
+        btn.classList.remove('recommended');
+        if (btn.dataset.size === size) btn.classList.add('recommended');
+      });
+    }
+
+    // Add spin animation
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+    document.head.appendChild(styleEl);
+    
+    // Run demo on load
+    setTimeout(runDemo, 500);
+  </script>
+</body>
+</html>
+

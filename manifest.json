@@ -1,0 +1,81 @@
+{
+  "manifest_version": 3,
+  "name": "FitGenius — AI Size Recommendations",
+  "version": "1.0.0",
+  "description": "AI-powered clothing size recommendations for online shopping — personalized fit scores on every product",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://*.amazon.com/*",
+    "https://*.amazon.co.uk/*",
+    "https://*.amazon.in/*",
+    "https://*.amazon.de/*",
+    "https://*.flipkart.com/*",
+    "https://*.myntra.com/*",
+    "https://*.ajio.com/*",
+    "https://*.nordstrom.com/*",
+    "https://*.zara.com/*",
+    "https://*.hm.com/*",
+    "https://*.asos.com/*",
+    "https://*.uniqlo.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.amazon.com/*",
+        "https://*.amazon.co.uk/*",
+        "https://*.amazon.in/*",
+        "https://*.amazon.de/*",
+        "https://*.flipkart.com/*",
+        "https://*.myntra.com/*",
+        "https://*.ajio.com/*",
+        "https://*.nordstrom.com/*",
+        "https://*.zara.com/*",
+        "https://*.hm.com/*",
+        "https://*.asos.com/*",
+        "https://*.uniqlo.com/*"
+      ],
+      "js": [
+        "engine/materials.js",
+        "engine/size-charts.js",
+        "engine/body-estimator.js",
+        "engine/recommender.js",
+        "content/extractors/amazon.js",
+        "content/extractors/generic.js",
+        "content/card-badges.js",
+        "content/widget.js",
+        "content/content.js"
+      ],
+      "css": [],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/widget.css",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitGenius — Your AI Fit Expert</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="popup-container">
+    
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+        </div>
+        <div class="logo-text">
+          <h1>Shop With Confidence</h1>
+        </div>
+      </div>
+    </header>
+
+    <!-- Step Navigation -->
+    <div class="steps-nav">
+      <button class="step-dot active" data-step="1" title="Basics">
+        <span class="step-number">1</span>
+        <span class="step-label">Basics</span>
+      </button>
+      <div class="step-line"></div>
+      <button class="step-dot" data-step="2" title="Body Shape">
+        <span class="step-number">2</span>
+        <span class="step-label">Shape</span>
+      </button>
+      <div class="step-line"></div>
+      <button class="step-dot" data-step="3" title="Photo & Prefs">
+        <span class="step-number">3</span>
+        <span class="step-label">Finish</span>
+      </button>
+      <div class="step-line"></div>
+      <button class="step-dot" data-step="4" title="History">
+        <span class="step-number">4</span>
+        <span class="step-label">History</span>
+      </button>
+    </div>
+
+    <!-- ═══ Step 1: The Easy Stuff ═══ -->
+    <section class="step-content active" id="step-1">
+      <div class="step-title" style="margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><h2 style="font-size: 15px; margin:0;">Profile Basics</h2>
+      </div>
+      
+      <div class="form-section">
+        <!-- Gender -->
+        <div class="gender-selector">
+          <label class="gender-option">
+            <input type="radio" name="gender" value="male">
+            <div class="gender-card">
+              <span class="gender-label">Male</span>
+            </div>
+          </label>
+          <label class="gender-option">
+            <input type="radio" name="gender" value="female">
+            <div class="gender-card">
+              <span class="gender-label">Female</span>
+            </div>
+          </label>
+          <label class="gender-option">
+            <input type="radio" name="gender" value="nonbinary">
+            <div class="gender-card">
+              <span class="gender-label">Other</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- Height & Weight -->
+        <div class="measurement-category">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="height">Height</label>
+              <div class="height-input-group">
+                <div class="input-wrap">
+                  <input type="number" id="height-ft" class="form-input" placeholder="5" min="3" max="7" step="1">
+                  <span class="input-unit">ft</span>
+                </div>
+                <div class="input-wrap">
+                  <input type="number" id="height-in" class="form-input" placeholder="10" min="0" max="11" step="1">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weight">Weight</label>
+              <div class="input-wrap">
+                <input type="number" id="weight" class="form-input" placeholder="165" step="1" min="70" max="400">
+                <span class="input-unit">lbs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Usual Size -->
+        <div class="measurement-category" style="margin-top: 10px;">
+          <h3 class="category-title" style="margin-bottom: 6px;">Your Usual Size</h3>
+          <div class="form-group-row">
+            <div class="form-group">
+              <label>Top Size (T-shirts, Shirts)</label>
+              <select id="usual-top-size" class="form-select">
+                <option value="">Not sure</option>
+                <option value="XS">XS</option>
+                <option value="S">Small</option>
+                <option value="M">Medium</option>
+                <option value="L">Large</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+                <option value="3XL">3XL</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Bottom Size (Pants, Jeans)</label>
+              <select id="usual-bottom-size" class="form-select">
+                <option value="">Not sure</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit toggle -->
+        <div class="unit-toggle">
+          <button class="unit-btn active" data-unit="imperial">🇺🇸 Imperial (ft/lbs)</button>
+          <button class="unit-btn" data-unit="metric">🌍 Metric (cm/kg)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Step 2: Body Shape ═══ -->
+    <section class="step-content" id="step-2">
+      <div class="step-title" style="margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><h2 style="font-size: 15px; margin:0;">Body Geometry</h2>
+      </div>
+
+      <div class="body-shape-grid" id="body-shape-grid">
+        <!-- Populated by JS based on gender -->
+      </div>
+
+      <!-- Estimated measurements preview -->
+      <div class="estimate-preview" id="estimate-preview" style="display:none;">
+        <h3 class="category-title">Calculated Profile</h3>
+        <div class="estimate-grid" id="estimate-grid"></div>
+        <p class="estimate-note">Derived from mathematical baselines. Adjust below if desired.</p>
+        
+        <details class="advanced-toggle">
+          <summary>Edit Base Measurements</summary>
+          <div class="advanced-measurements">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="chest">Chest</label>
+                <div class="input-wrap">
+                  <input type="number" id="chest" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="waist">Waist</label>
+                <div class="input-wrap">
+                  <input type="number" id="waist" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="hip">Hip</label>
+                <div class="input-wrap">
+                  <input type="number" id="hip" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="shoulder">Shoulder</label>
+                <div class="input-wrap">
+                  <input type="number" id="shoulder" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="inseam">Inseam</label>
+                <div class="input-wrap">
+                  <input type="number" id="inseam" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="neck">Neck</label>
+                <div class="input-wrap">
+                  <input type="number" id="neck" class="form-input" step="0.5">
+                  <span class="input-unit">in</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═══ Step 3: Photo & Preferences ═══ -->
+    <section class="step-content" id="step-3">
+      <div class="step-title" style="margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><h2 style="font-size: 15px; margin:0;">Fit Profile</h2>
+      </div>
+
+      <!-- Fit Preference -->
+      <div class="fit-options">
+        <label class="fit-option" data-fit="slim">
+          <input type="radio" name="fitPreference" value="slim">
+          <div class="fit-card">
+            <div class="fit-name">Slim</div>
+            <div class="fit-desc">Form-fitting lines</div>
+          </div>
+        </label>
+        <label class="fit-option" data-fit="regular">
+          <input type="radio" name="fitPreference" value="regular" checked>
+          <div class="fit-card">
+            <div class="fit-name">Regular</div>
+            <div class="fit-desc">Classic structure</div>
+          </div>
+        </label>
+        <label class="fit-option" data-fit="relaxed">
+          <input type="radio" name="fitPreference" value="relaxed">
+          <div class="fit-card">
+            <div class="fit-name">Relaxed</div>
+            <div class="fit-desc">Comfort oriented</div>
+          </div>
+        </label>
+        <label class="fit-option" data-fit="oversized">
+          <input type="radio" name="fitPreference" value="oversized">
+          <div class="fit-card">
+            <div class="fit-name">Oversized</div>
+            <div class="fit-desc">Voluminous drape</div>
+          </div>
+        </label>
+      </div>
+
+
+      <!-- Gemini API Key -->
+      <div class="measurement-category" style="margin-top:10px;">
+        <h3 class="category-title" style="margin-bottom:4px;">Gemini Diagnostic Core</h3>
+        <div class="form-group" style="margin-bottom:8px;">
+          <label>API Key <span style="font-size:9px;color:var(--success);font-weight:600;">ACTIVE</span></label>
+          <div class="input-wrap">
+            <input type="password" id="gemini-api-key" class="form-input" placeholder="Using built-in key" style="padding-right:14px;font-family:monospace;">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-secondary" id="btn-test-api" style="font-size:11px;padding:6px 14px;">
+            ⚡ Test Connection
+          </button>
+          <span id="api-status" style="font-size:11px;font-weight:600;"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Step 4: My Wardrobe & History ═══ -->
+    <section class="step-content" id="step-4">
+      <div class="step-title" style="margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8l-4 4"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg><h2 style="font-size: 15px; margin:0;">Analysis Log</h2>
+      </div>
+
+      <!-- Reference Products -->
+      <div class="measurement-category" style="margin-bottom:12px;">
+        <h3 class="category-title" style="margin-bottom:6px;">Calibrate Target Model</h3>
+        <div class="form-group">
+          <label>Product Link</label>
+          <div class="input-wrap">
+            <input type="url" id="ref-product-url" class="form-input" placeholder="https://amazon.com/dp/..." style="padding-right:14px">
+          </div>
+        </div>
+        <div class="form-group-row">
+          <div class="form-group">
+            <label>Size You Bought</label>
+            <select id="ref-product-size" class="form-select">
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L" selected>L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Deviation Profile</label>
+            <select id="ref-product-fit" class="form-select">
+              <option value="perfect">Perfect Calibration</option>
+              <option value="slightly-tight">Restricted</option>
+              <option value="slightly-loose">Voluminous</option>
+              <option value="too-small">Insufficient</option>
+              <option value="too-large">Excessive</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-full" id="btn-add-reference" style="margin-top:4px;">
+          Inject Baseline
+        </button>
+      </div>
+
+      <!-- Saved Reference Products -->
+      <div id="reference-list" class="reference-list"></div>
+
+      <!-- History Divider -->
+      <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:16px 0;"></div>
+
+      <h3 class="category-title" style="margin-bottom:12px">Analysis Database</h3>
+      <div id="history-list" class="history-list">
+        <div class="history-empty">
+          <p>Database empty. Initialize product analysis.</p>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary btn-full" id="btn-clear-history" style="margin-top:12px; background: rgba(0,0,0,0.5);">
+        Purge Memory
+      </button>
+    </section>
+
+    <!-- Action Buttons -->
+    <div class="popup-actions">
+      <button class="btn btn-secondary" id="btn-prev" disabled>← Back</button>
+      <button class="btn btn-primary" id="btn-next">Next →</button>
+      <button class="btn btn-primary btn-save" id="btn-save" style="display:none;">
+        💾 Save Profile
+      </button>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="status-bar">
+      <span class="status-text">Ready</span>
+    </div>
+  </div>
+
+  <script src="../engine/body-estimator.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
