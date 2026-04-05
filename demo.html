@@ -7,18 +7,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #6C5CE7;
-      --primary-light: #a29bfe;
-      --secondary: #00cec9;
-      --accent: #fd79a8;
+      --primary: #FF9900;
+      --primary-light: #FFB84D;
+      --secondary: #007185;
+      --accent: #232F3E;
       --success: #00b894;
-      --warning: #fdcb6e;
+      --warning: #FF9900;
       --danger: #e17055;
-      --bg: #0a0a1a;
-      --bg-card: rgba(25, 25, 50, 0.95);
-      --text: #f0f0f5;
-      --text-muted: #9b9bb5;
-      --border: rgba(108, 92, 231, 0.25);
+      --bg: #000000;
+      --bg-card: #131A22;
+      --text: #ffffff;
+      --text-muted: #b0c4de;
+      --border: #444444;
       --glass: rgba(255, 255, 255, 0.05);
     }
     
@@ -36,7 +36,7 @@
     .hero {
       text-align: center;
       padding: 60px 20px 40px;
-      background: linear-gradient(180deg, rgba(108,92,231,0.15) 0%, transparent 100%);
+      background: var(--bg);
       position: relative;
       overflow: hidden;
     }
@@ -48,8 +48,8 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(ellipse at 30% 50%, rgba(108,92,231,0.1) 0%, transparent 50%),
-                  radial-gradient(ellipse at 70% 50%, rgba(0,206,201,0.08) 0%, transparent 50%);
+      background: radial-gradient(ellipse at 30% 50%, rgba(255,153,0,0.1) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 50%, rgba(0,113,133,0.08) 0%, transparent 50%);
       animation: heroDrift 20s ease-in-out infinite;
     }
     
@@ -63,11 +63,12 @@
     .hero-logo {
       width: 80px; height: 80px;
       margin: 0 auto 20px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      background: var(--primary);
+      color: #000;
       display: flex; align-items: center; justify-content: center;
-      font-size: 42px;
-      box-shadow: 0 8px 30px rgba(108,92,231,0.4);
+      font-size: 32px;
+      box-shadow: 0 8px 30px rgba(255,153,0,0.4);
       animation: pulse 3s ease-in-out infinite;
     }
     
@@ -77,10 +78,11 @@
     
     .hero h1 {
       font-size: 48px; font-weight: 800;
-      background: linear-gradient(135deg, var(--primary-light), var(--secondary));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      color: #ffffff;
       margin-bottom: 12px;
       animation: fadeUp 0.8s ease-out;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .hero p {
@@ -146,7 +148,7 @@
       box-shadow: 0 8px 30px rgba(108,92,231,0.15);
     }
     
-    .feature-icon { font-size: 36px; margin-bottom: 16px; }
+    .feature-icon { font-size: 36px; margin-bottom: 16px; color: var(--primary); }
     
     .feature-card h3 {
       font-size: 18px; font-weight: 700;
@@ -590,11 +592,13 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-logo">👔</div>
-      <h1>FitGenius</h1>
-      <p>AI-powered clothing size recommendations that work on any shopping site. Never order the wrong size again.</p>
+      <div class="hero-logo">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path></svg>
+      </div>
+      <h1>Shop With Confidence</h1>
+      <p>Precision AI styling and verification dynamically injected right into your shopping tab.</p>
       <div class="hero-badge">
-        ⚡ Works on Amazon, Flipkart, Myntra, Zara, ASOS, H&M & more
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polyline></svg> Powered by Gemini 2.5 Flash
       </div>
     </div>
   </section>
@@ -602,8 +606,8 @@
   <!-- Features -->
   <section class="demo-section">
     <div class="section-title">
-      <h2>✨ How It Works</h2>
-      <p>FitGenius uses AI to match your body with the perfect clothing size</p>
+      <h2 style="display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> How It Works</h2>
+      <p>The Diagnostic Core uses Gemini AI to match your body with the perfect clothing size</p>
     </div>
     
     <div class="features-grid">
