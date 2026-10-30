@@ -1,3 +1,7 @@
+// PLAIN ENGLISH: guesses your detailed body measurements (chest, waist...)
+// from the easy answers you give - height, weight, body shape, and the size
+// you usually buy - so you never need a measuring tape.
+// 
 /**
  * FitGenius — Body Measurement Estimator v2
  * Estimates detailed measurements from height, weight, gender, body shape, and usual clothing size

@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the helper that talks to Google's Gemini AI - used for the
+// clever bits like reading messy size charts and judging review comments.
+// 
 /**
  * FitGenius — Gemini AI Integration Module v4
  * Handles all communication with Google's Gemini API

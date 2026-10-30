@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the fallback reader for shopping sites without a custom
+// extractor - makes a best effort at finding sizes and charts.
+// 
 /**
  * FitGenius — Generic Product Data Extractor
  * Fallback extractor for non-Amazon shopping sites

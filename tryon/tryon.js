@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the virtual try-on feature - previews how a garment might
+// look on you.
+// 
 /**
  * FitGenius — Virtual Try-On Module
  * Canvas-based garment visualization overlay on user photo

@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the script that runs INSIDE shopping pages: notices you're
+// looking at a product, gathers its details, and opens the FitGenius widget.
+// 
 /**
  * FitGenius — Main Content Script Orchestrator v4
  * 

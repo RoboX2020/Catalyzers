@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: backup size charts (in inches) for when a product page
+// doesn't publish its own.
+// 
 /**
  * FitGenius — Standard Size Charts Reference Database
  * Fallback size charts when product-specific charts aren't available

@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the little FitGenius box injected onto the product page
+// that shows your recommended size without leaving the store.
+// 
 /**
  * FitGenius — Injected Widget Component
  * Renders the recommendation UI inside a Shadow DOM on the shopping page

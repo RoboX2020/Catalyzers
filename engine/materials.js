@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: how different fabrics behave (stretch, shrink...) so the
+// size advice can adjust - a stretchy tee fits differently than stiff denim.
+// 
 /**
  * FitGenius — Material/Fabric Intelligence Database
  * Provides stretch factors, shrinkage info, and comfort adjustments

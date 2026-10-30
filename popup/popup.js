@@ -1,3 +1,7 @@
+// PLAIN ENGLISH: the extension's pop-up window - the short questionnaire
+// (height, weight, body shape, usual size) and where your size advice shows
+// up.
+// 
 /**
  * FitGenius — Popup Script v2
  * Simplified flow: Height + Weight + Body Shape + Usual Size → Auto-estimated measurements

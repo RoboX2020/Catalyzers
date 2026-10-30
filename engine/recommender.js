@@ -1,3 +1,9 @@
+// PLAIN ENGLISH: the brain of FitGenius. Answers 'what size should this
+// person buy?' by combining several clues: their measurements vs the size
+// chart, the size they say they usually wear (trusted most - people know
+// their size), a piece of clothing they already own for comparison, and
+// what reviewers said about fit. Ends in a size pick plus a confidence score.
+// 
 /**
  * FitGenius — Core Recommendation Engine v2
  * Computes size recommendations by comparing user measurements against product sizing

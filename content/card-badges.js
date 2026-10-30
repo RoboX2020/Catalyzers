@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the small size badges stamped onto product cards while
+// you browse lists of items.
+// 
 /**
  * FitGenius — Product Card Badge System
  * Injects AI confidence badges on product cards in search/browse pages

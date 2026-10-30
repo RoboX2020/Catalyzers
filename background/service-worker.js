@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: the extension's always-on background worker: wires the
+// parts together, passes messages between tabs, popup and AI.
+// 
 /**
  * FitGenius — Background Service Worker v4
  * Manages API routing, storage, and batch card scoring

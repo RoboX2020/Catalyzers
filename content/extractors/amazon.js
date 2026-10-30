@@ -1,3 +1,6 @@
+// PLAIN ENGLISH: reads Amazon product pages (title, sizes, chart, reviews)
+// into tidy data the recommender can use.
+// 
 /**
  * FitGenius — Amazon Product Data Extractor
  * Extracts product details from Amazon product pages using resilient DOM traversal
