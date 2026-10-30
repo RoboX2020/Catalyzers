@@ -146,6 +146,7 @@ const FG_BodyEstimator = (() => {
    * 2. Height/weight/shape provide the remaining 30% fine-tuning
    * 3. If NO usual size → height/weight/shape are 100% of the estimate
    */
+  // Guess a full set of body measurements from just height, weight and gender.
   function estimate(input) {
     const { heightInches, weightLbs, gender, bodyShape, usualSize } = input;
     
@@ -224,6 +225,7 @@ const FG_BodyEstimator = (() => {
    *   5'10" 200lb avg → chest ~46", waist ~40" (typical XL)
    *   6'0"  220lb avg → chest ~48", waist ~42" (typical XL/XXL)
    */
+  // Male estimation formulas.
   function estimateMale(h, w, bmi) {
     // Chest: higher weight coefficient — every 10lbs adds ~1" chest
     const chest = 22.0 + (w * 0.10) + (h * 0.05);
@@ -252,6 +254,7 @@ const FG_BodyEstimator = (() => {
   /**
    * Female anthropometric estimation — CORRECTED coefficients
    */
+  // Female estimation formulas.
   function estimateFemale(h, w, bmi) {
     const chest = 18.0 + (w * 0.09) + (h * 0.04);
     const waist = 8.0 + (w * 0.10) + (h * 0.02);

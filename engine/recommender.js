@@ -78,6 +78,8 @@ const FG_Recommender = (() => {
    * If someone says "I wear XL", the recommendation should HEAVILY favor XL
    * unless measurements clearly say otherwise
    */
+  // If the chart-suggested size disagrees with the size they usually buy,
+  // trust their usual size - people know their own size best.
   function applyUsualSizeAnchoring(sizeMatch, userProfile, chart) {
     const usualSize = userProfile.usualTopSize || userProfile.usualSize;
     if (!usualSize) return sizeMatch;
@@ -151,6 +153,7 @@ const FG_Recommender = (() => {
    * Compare the current product against a reference product the user already owns
    * This is the "I bought this and it fit well" feature
    */
+  // Compare against a garment they already own that fits well.
   function compareWithReference(userProfile, newProduct, refProduct, chart) {
     const comparison = {
       hasReference: true,
@@ -215,6 +218,8 @@ const FG_Recommender = (() => {
   /**
    * Combine measurement-based sizing with reference product and usual-size signals
    */
+  // Blend all the clues (measurements, reference garment, reviews) into one
+  // size pick.
   function combineSizeSignals(measurementMatch, refComparison, reviewInsights, chart) {
     if (!refComparison) return measurementMatch;
 
@@ -252,6 +257,7 @@ const FG_Recommender = (() => {
   /**
    * Calculate the best size match based on measurements
    */
+  // Score each size in the chart against their measurements; best score wins.
   function calculateSizeMatch(userMeasurements, chart, material, fitPreference, productData) {
     const sizes = chart.sizes || Object.keys(chart.measurements || {});
     const measurements = chart.measurements || {};
@@ -379,6 +385,7 @@ const FG_Recommender = (() => {
   /**
    * Get importance weight for each measurement type
    */
+  // Some measurements matter more (chest for shirts, waist for pants).
   function getMeasurementWeight(key) {
     const weights = {
       chest: 3,
@@ -395,6 +402,7 @@ const FG_Recommender = (() => {
   /**
    * Get fit offset based on user preference
    */
+  // 'I like it loose/tight' nudges the recommendation up or down.
   function getFitOffset(preference) {
     switch (preference) {
       case 'slim': return -1;
@@ -408,6 +416,7 @@ const FG_Recommender = (() => {
   /**
    * Analyze how the garment will fit across body areas
    */
+  // Describe how the recommended size will fit in each area (chest, waist...).
   function analyzeFit(sizeMatch, material, fitPreference, userProfile) {
     const details = sizeMatch.details;
     const analysis = {
@@ -502,6 +511,7 @@ const FG_Recommender = (() => {
   /**
    * Analyze reviews for sizing sentiment
    */
+  // Mine customer reviews for 'runs small' / 'runs large' signals.
   function analyzeReviews(reviews) {
     if (!reviews || reviews.length === 0) {
       return { sentiment: 'neutral', confidence: 'low', details: 'No reviews available for fit analysis' };
@@ -568,6 +578,7 @@ const FG_Recommender = (() => {
   /**
    * Compute overall confidence in the recommendation
    */
+  // How sure are we? The more the clues agree, the higher the confidence.
   function computeConfidence(sizeMatch, reviewInsights, productData, userProfile, refComparison) {
     let confidence = 45; // Base
 
@@ -612,6 +623,7 @@ const FG_Recommender = (() => {
   /**
    * Adjust recommendation based on review insights
    */
+  // If reviews say it runs small, bump the size up (and vice versa).
   function adjustForReviews(sizeMatch, reviewInsights) {
     const sizes = Object.keys(sizeMatch.allScores || {});
     const currentIdx = sizes.indexOf(sizeMatch.bestSize);
@@ -637,6 +649,7 @@ const FG_Recommender = (() => {
   /**
    * Generate helpful tips including reference comparison notes
    */
+  // Plain advice for the shopper ('size up if between sizes', ...).
   function generateTips(fitAnalysis, material, reviewInsights, fitPreference, refComparison) {
     const tips = [];
 
